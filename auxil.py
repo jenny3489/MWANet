@@ -20,35 +20,27 @@ def weights_init(m):
 def loadData(name, num_components):
     # load data amd map
     if name == 'HL':
-        dataset = sio.loadmat('./data/Salinas.mat')#0.992 [150 150 204] 128 小损失
+        dataset = sio.loadmat('./data/Salinas.mat')# [150 150 204] 128 小损失
         data = dataset['data']
         map = dataset['map']
     elif name == 'HB':
-        dataset = sio.loadmat('./data/Beach.mat')#0.988 [150 150 188] 128 小损失 64
+        dataset = sio.loadmat('./data/Beach.mat')# [150 150 188] 128 小损失 64
         data = dataset['data']
         map = dataset['map']
     elif name == 'HP':
-        dataset = sio.loadmat('./data/Pavia center.mat')#0.995 [150 150 102] 96  小损失 64
-        data = dataset['data']
-        map = dataset['map']
-    elif name == 'HU':
-        dataset = sio.loadmat('./data/hydice_dataset.mat')#0.995 [100 100 204] 128
+        dataset = sio.loadmat('./data/Pavia center.mat')# [150 150 102] 96  小损失 64
         data = dataset['data']
         map = dataset['map']
     elif name == 'HUI':
-        dataset = sio.loadmat('./data/abu-urban-4.mat')#0.998 [100 100 205] 128
-        data = dataset['data']
-        map = dataset['map']
-    elif name == 'HUII':
-        dataset = sio.loadmat('./data/abu-urban-2.mat')#0.994 [100 100 198] 128
+        dataset = sio.loadmat('./data/abu-urban-4.mat')# [100 100 205] 128
         data = dataset['data']
         map = dataset['map']
     elif name == 'HY':
-        dataset = sio.loadmat('./data/Hyperion.mat')#0.994 [100 100 198] 128
+        dataset = sio.loadmat('./data/Hyperion.mat')# [100 100 198] 128
         data = dataset['data']
         map = dataset['groundtruth']
     elif name == 'HC':
-        dataset = sio.loadmat('./data/coast.mat')#0.994 [100 100 198] 128
+        dataset = sio.loadmat('./data/coast.mat')# [100 100 198] 128
         data = dataset['data']
         map = dataset['map']
     else:
