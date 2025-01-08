@@ -20,15 +20,15 @@ def weights_init(m):
 def loadData(name, num_components):
     # load data amd map
     if name == 'HL':
-        dataset = sio.loadmat('./data/Salinas.mat')# [150 150 204] 128 小损失
+        dataset = sio.loadmat('./data/Salinas.mat')# [150 150 204] 64
         data = dataset['data']
         map = dataset['map']
     elif name == 'HB':
-        dataset = sio.loadmat('./data/Beach.mat')# [150 150 188] 128 小损失 64
+        dataset = sio.loadmat('./data/Beach.mat')# [150 150 188] 128  128
         data = dataset['data']
         map = dataset['map']
     elif name == 'HP':
-        dataset = sio.loadmat('./data/Pavia center.mat')# [150 150 102] 96  小损失 64
+        dataset = sio.loadmat('./data/Pavia center.mat')# [150 150 102] 128
         data = dataset['data']
         map = dataset['map']
     elif name == 'HUI':
@@ -36,7 +36,7 @@ def loadData(name, num_components):
         data = dataset['data']
         map = dataset['map']
     elif name == 'HY':
-        dataset = sio.loadmat('./data/Hyperion.mat')# [100 100 198] 128
+        dataset = sio.loadmat('./data/Hyperion.mat')# [100 100 198] 96
         data = dataset['data']
         map = dataset['groundtruth']
     elif name == 'HC':
