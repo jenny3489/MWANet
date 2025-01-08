@@ -17,16 +17,16 @@ from model import MWANet
 torch.autograd.set_detect_anomaly(True)
 
 seed=100
-random.seed(seed)  # 设置 Python 随机模块的种子
-np.random.seed(seed)  # 设置 NumPy 随机模块的种子
-os.environ['PYTHONHASHSEED'] = str(seed)# 设置 PYTHONHASHSEED 环境变量。
-torch.manual_seed(seed) # 设置 PyTorch 的 CPU 随机种子c
-torch.cuda.manual_seed(seed) # 设置 PyTorch 的 CPU 随机种子
-torch.cuda.manual_seed_all(seed)  # 如果使用多 GPU，设置所有 GPU 的随机种子。
-torch.backends.cudnn.benchmark = False# 如果使用多 GPU，设置所有 GPU 的随机种子。
-torch.backends.cudnn.deterministic = True# 如果使用多 GPU，设置所有 GPU 的随机种子。
-os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'# 配置 CUDA BLAS 库以实现确定性。
-torch.use_deterministic_algorithms(True)# 强制 PyTorch 使用确定性算法。
+random.seed(seed)  
+np.random.seed(seed)  
+os.environ['PYTHONHASHSEED'] = str(seed)
+torch.manual_seed(seed) 
+torch.cuda.manual_seed(seed) 
+torch.cuda.manual_seed_all(seed)  
+torch.backends.cudnn.benchmark = False#
+torch.backends.cudnn.deterministic = True
+os.environ['CUBLAS_WORKSPACE_CONFIG'] = ':16:8'
+torch.use_deterministic_algorithms(True)
 torch.use_deterministic_algorithms(False)
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 #data_norm=True
@@ -40,10 +40,10 @@ def load_hyper(args):#处理数据
     data_bs = (data_bs - np.min(data_bs)) / (np.max(data_bs) - np.min(data_bs))
     if  (args.dataset=='HP' or args.dataset=='HB') and args.data_norm:#(args.dataset=='HP' or args.dataset=='HB') and
         data_bs = auxil.ZScoreNorm().fit(data_bs).transform(data_bs)
-    x_train = data_bs[np.newaxis, :]#1,100,100,191神经网络希望自己输入的维度是4个 1表示只有一个样本（batch_size,channles,height,width）
+    x_train = data_bs[np.newaxis, :]
     # map = torch.tensor((map[np.newaxis,np.newaxis,:,:]))
     # map = F.interpolate(map, size=(128, 128), mode='bilinear', align_corners=False).squeeze().numpy()
-    train_loader = torch.tensor(np.transpose(x_train, (0, 3, 1, 2)).astype("float32"))#将1,100,100,191变为1,191,100,100  float32将其转为浮点数节省空间
+    train_loader = torch.tensor(np.transpose(x_train, (0, 3, 1, 2)).astype("float32"))
     # train_loader = F.interpolate(train_loader, size=(128, 128), mode='bilinear', align_corners=False)
     train_loader = HyperData(train_loader)
     train_loader = torch.utils.data.DataLoader(train_loader, batch_size=args.tr_bsize, shuffle=False)
@@ -94,13 +94,13 @@ def test(test_loader, map, model, criterion, use_cuda, draw = False):
         return (np.average(losses), test_result)
 def main():
     parser = argparse.ArgumentParser(description='PyTorch DCNNs Training')
-    parser.add_argument('--epochs', default=110, type=int, help='number of total epochs to run')  # 设置训练的总轮数
-    parser.add_argument('--lr', '--learning-rate', default=1e-2, type=float, help='initial learning rate')  # 设置初始学习率。
-    parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,help='weight decay (default: 1e-4)')  # 设置权重衰减
-    parser.add_argument('--tr_bsize', default=1, type=int, help='mini-batch train size (default: 100)')  # 设置训练时的小批量大小
-    parser.add_argument('--components', default=False, type=int, help='dimensionality reduction')  # 是否进行降维。
-    parser.add_argument('--thre', default=1e-6, type=float, help='the threshold of stopping training')  # 设置停止训练的损失阈值。
-    parser.add_argument('--dataset', default='HL', type=str, help='dataset (options:HY HU HUI)')  # 设置数据集名称。
+    parser.add_argument('--epochs', default=110, type=int, help='number of total epochs to run')  
+    parser.add_argument('--lr', '--learning-rate', default=1e-2, type=float, help='initial learning rate')  
+    parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,help='weight decay (default: 1e-4)')  
+    parser.add_argument('--tr_bsize', default=1, type=int, help='mini-batch train size (default: 100)')  
+    parser.add_argument('--components', default=False, type=int, help='dimensionality reduction') 
+    parser.add_argument('--thre', default=1e-6, type=float, help='the threshold of stopping training')  
+    parser.add_argument('--dataset', default='HL', type=str, help='dataset (options:HY HU HUI)')  
     parser.add_argument('--BS', default=64, type=int, help='num_bs')
     parser.add_argument('--data_norm', default=True, type=int, help='data_norm')
     args = parser.parse_args()
@@ -177,9 +177,6 @@ def main():
             print("FINAL: LOSS", checkpoint['loss'], "ACCURACY", checkpoint['best_acc'])
             return test_result, time_train + time_test
 if __name__ == '__main__':
-    #start = time.perf_counter()
     result,time_UMAD = main()
-    #end = time.perf_counter()
-    #time_UMAD = end-start
     sio.savemat('MWANet.mat', {'anomaly_map': result['anomaly_map']})
     print("AUC: ", result['AUC'], "Time: ",time_UMAD)
